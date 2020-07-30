@@ -1,0 +1,20 @@
+Postgresql pg_basebackup
+-bash-4.2$ pg_basebackup -D /var/lib/pgsql/11/backups/$(date +%d%m%Y) -U postgres -R -Ft -z
+Password:
+-bash-4.2$ cd  /var/lib/pgsql/11/backups/
+-bash-4.2$ ll
+total 0
+drwx------ 2 postgres postgres 46 Jul 30 18:57 30072020
+-bash-4.2$ ll
+total 5244
+-rw------- 1 postgres postgres 5346609 Jul 30 18:57 base.tar.gz
+-rw------- 1 postgres postgres   18257 Jul 30 18:57 pg_wal.tar.gz
+-bash-4.2$ tar -xzf base.tar.gz 
+
+Restore etme pg_basebackup
+1.	chown -R postgres:postgres /Restore/30072020-db/basebackup
+2.	chmod -R 700 /Restore/30072020-db/basebackup
+3.	/usr/pgsql-11/bin/pg_ctl -D /var/lib/pgsql/11/data  stop --export işleminden önce var olan instance öncellikle stop ettirmemiz gerekiyor
+4.	export PGDATA=/Restore/30072020-db/basebackup  ---ayağa kaldırmak istediğimiz instance export ettik.
+5.	/usr/pgsql-11/bin/pg_ctl  -D  /Restore/30072020-db/basebackup start -  -ayağa kaldıracağımız instance start ettik 
+6.	/usr/pgsql-11/bin/pg_ctl  -D  /Restore/30072020-db/basebackup status -baktık ayaga kalktımı diye.
